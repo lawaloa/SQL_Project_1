@@ -10,7 +10,7 @@
 - [Water Source Analysis](#water-source-analysis)
 - [Water Source Types – Description](#water-source-types--description)
 - [Visit Pattern Exploration](#visit-pattern-exploration)
-- [Result/Findings](#resultfindings)
+- [Water Quality Assessment](#water-quality-assessment)
 - [Recommendations](#recommendations)
 - [Limitations](#limitations)
 - [References](#references)
@@ -302,20 +302,6 @@ WHERE
 | SoRu37635224  | shared_tap           | 3920                    |
 | SoRu38776224  | shared_tap           | 3180                    |
 
-
-### Query Output – Water Source Types for Long Queue Times
-
-| source_id     | type_of_water_source | number_of_people_served |
-|---------------|----------------------|-------------------------|
-| AkKi00881224  | shared_tap           | 3398                    |
-| AkLu01628224  | bio_dirty_well       | 210                     |
-| AkRu05234224  | tap_in_home_broken   | 496                     |
-| HaRu19601224  | shared_tap           | 3322                    |
-| HaZa21742224  | pol_dirty_well       | 308                     |
-| SoRu36096224  | shared_tap           | 3786                    |
-| SoRu37635224  | shared_tap           | 3920                    |
-| SoRu38776224  | shared_tap           | 3180                    |
-
 **Description:**  
 This table cross-references the `source_id` values from visits with **extreme queue times** against the `water_source` table to reveal the type of water source and how many people each serves.  
 
@@ -325,3 +311,40 @@ The findings indicate that:
 - **Broken in-home taps** appear, suggesting that even household infrastructure issues contribute to long queues elsewhere.
 
 These insights reinforce that **infrastructure improvements** must target both **high-demand shared facilities** and **failing household connections** to reduce excessive wait times.
+
+## Water Quality Assessment
+---
+
+### 💧 Step 4 – Assessing the Quality of Water Sources
+
+The **quality of water sources** is a central focus of this survey.  
+The `water_quality` table records a **subjective quality score** for each visit, assigned by a field surveyor:  
+- **Score 1** → Terrible water quality  
+- **Score 10** → Excellent, clean water (usually in homes)  
+
+Shared taps are generally rated lower, and queue times also affect the score.  
+For this query, I looked for **sources rated the highest (10)** but with exactly **two recorded visits**.
+
+**SQL Query:**
+```sql
+SELECT
+    *
+FROM 
+    water_quality
+WHERE
+    subjective_quality_score = 10
+    AND visit_count = 2;
+```
+
+> ### ⚠️ Data Integrity Concern
+> 
+> I retrieved **218 rows** matching these criteria — but this result raises some concerns.  
+> At this scale, it’s almost inevitable that **errors will creep into the dataset**.  
+> It’s possible that some field surveyors or data entry staff **misjudged water quality scores** or recorded them inaccurately.  
+> 
+> To ensure the integrity of our findings, I’ll recommend to President Naledi that we **re-audit these specific sources**.  
+> An independent auditor can recheck a sample of these water points on-site, validating the recorded scores and ensuring that our data truly reflects real-world conditions.  
+> 
+> **Why this matters:** Even small inaccuracies in our quality assessments could mislead decision-making, divert resources, and delay solutions for communities in urgent need.
+
+
