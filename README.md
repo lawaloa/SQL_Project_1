@@ -37,9 +37,10 @@ By executing these tasks, I translate raw data into **meaningful insights** that
 
 ---
 
-### Data Familiarization  🔍
+### Data Familiarization  
 ---
 
+🔍
 I started this project by exploring the structure of the `md_water_services` database.  
 First, I ran a query to check **how many tables** were in the database and to get a list of their names.  
 
@@ -53,16 +54,16 @@ This initial exploration gave me a clear understanding of the **scope** and **st
 
 ---
 
-### Key SQL Queries 1 📊
+### Key SQL Queries 1 
 
-#### 1. Show All Tables: This give a list of all the tables in the database.
+#### 1. 📊 Show All Tables: This give a list of all the tables in the database.
 ```sql
 SHOW TABLES;
 ```
 The database contains 8 tables:  
 `data_dictionary`, `employee`, `global_water_access`, `location`, `visits`, `water_quality`, `water_source`, and `well_pollution`.
 
-#### 2. Preview First 5 Records From Each Table
+#### 2. 📊 Preview First 5 Records From Each Table
 
 ```sql
 SELECT *
