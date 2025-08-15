@@ -11,7 +11,7 @@
 - [Water Source Types – Description](#water-source-types--description)
 - [Visit Pattern Exploration](#visit-pattern-exploration)
 - [Water Quality Assessment](#water-quality-assessment)
-- [Recommendations](#recommendations)
+- [Pollution Investigation](#pollution-investigation)
 - [Limitations](#limitations)
 - [References](#references)
 
@@ -347,4 +347,41 @@ WHERE
 > 
 > **Why this matters:** Even small inaccuracies in our quality assessments could mislead decision-making, divert resources, and delay solutions for communities in urgent need.
 
+## Pollution Investigation
+---
 
+## 🧪 Step 5 – Investigating Pollution Issues
+
+For well water sources, we also recorded detailed **contamination and pollution data**.  
+To start, I identified the correct table (`well_pollution`) and previewed the first five rows to understand its structure.
+
+**SQL Query:**
+```sql
+SELECT 
+    * 
+FROM 
+    well_pollution 
+LIMIT 5;
+```
+
+### Query Output
+
+| source_id     | date                | description                              | pollutant_ppm | biological | results                   |
+|---------------|---------------------|------------------------------------------|---------------|------------|---------------------------|
+| KiRu28935224  | 2021-01-04 09:17:00 | Bacteria: Giardia Lamblia               | 0.0           | 495.898    | Contaminated: Biological  |
+| AkLu01628224  | 2021-01-04 09:53:00 | Bacteria: Salmonella Typhi               | 0.0           | 376.572    | Contaminated: Biological  |
+| HaZa21742224  | 2021-01-04 10:37:00 | Inorganic contaminants: Zinc...          | 2.715         | 0.0        | Contaminated: Chemical    |
+| HaRu19725224  | 2021-01-04 11:04:00 | Clean                                    | 0.0288593     | 0.0        | Clean                     |
+| SoRu35703224  | 2021-01-04 11:29:00 | Bacteria: E. coli                        | 0.0           | 296.437    | Contaminated: Biological  |
+
+---
+
+**Description:**  
+The `well_pollution` table records contamination levels for each well in Maji Ndogo. It includes both **biological contaminants** (e.g., *E. coli*, *Giardia Lamblia*, *Salmonella Typhi*) and **chemical pollutants** (e.g., toxic metals like zinc).  
+
+Each well is classified into one of three categories:  
+- **Clean** – Safe for consumption.  
+- **Contaminated: Biological** – Unsafe due to harmful microorganisms.  
+- **Contaminated: Chemical** – Unsafe due to toxic substances.  
+
+This classification is vital for **public health monitoring** and **intervention planning**. Since each record contains a `source_id`, we can link it back to its corresponding location in the database — allowing us to identify and map contamination hotspots across Maji Ndogo.
