@@ -65,6 +65,18 @@ SHOW TABLES;
 The database contains 8 tables:  
 `data_dictionary`, `employee`, `global_water_access`, `location`, `visits`, `water_quality`, `water_source`, and `well_pollution`.
 
+| Tables in `md_water_services_student` |
+|---------------------------------------|
+| data_dictionary                       |
+| employee                              |
+| global_water_access                   |
+| location                              |
+| water_quality                         |
+| visits                                |
+| water_source                          |
+| well_pollution                        |
+
+
 #### 2. 📊 Preview First 5 Records From Each Table
 
 ```sql
@@ -81,7 +93,8 @@ SELECT *
 LIMIT 5;
 
 SELECT *
-  FROM md_water_services.visits LIMIT 5;
+  FROM md_water_services.visits
+LIMIT 5;
 
 SELECT *
   FROM md_water_services.water_quality
@@ -96,4 +109,42 @@ SELECT *
 LIMIT 5;
 
 ```
+
+1. Sample Output – Location Table
+
+| location_id | address               | province_name | town_name | location_type |
+|-------------|-----------------------|---------------|-----------|---------------|
+| AkHa00000   | 2 Addis Ababa Road    | Akatsi        | Harare    | Urban         |
+| AkHa00001   | 10 Addis Ababa Road   | Akatsi        | Harare    | Urban         |
+| AkHa00002   | 9 Addis Ababa Road    | Akatsi        | Harare    | Urban         |
+| AkHa00003   | 139 Addis Ababa Road  | Akatsi        | Harare    | Urban         |
+| AkHa00004   | 17 Addis Ababa Road   | Akatsi        | Harare    | Urban         |
+
+> This table contains details about specific locations, including their `address`, the `province` and `town` they belong to, and whether they are classified as urban or not. While it doesn’t provide a descriptive name for the location, each entry includes a unique `location_id` that serves as an identifier.
+
+2.  Sample Output – Visits Table
+
+| record_id | location_id | source_id     | time_of_record       | visit_count | time_in_queue | assigned_employee_id |
+|-----------|-------------|---------------|----------------------|-------------|---------------|----------------------|
+| 0         | SoIl32582   | SoIl32582224  | 2021-01-01 09:10:00  | 1           | 15            | 12                   |
+| 1         | KiRu28935   | KiRu28935224  | 2021-01-01 09:17:00  | 1           | 0             | 46                   |
+| 2         | HaRu19752   | HaRu19752224  | 2021-01-01 09:36:00  | 1           | 62            | 40                   |
+| 3         | AkLu01628   | AkLu01628224  | 2021-01-01 09:53:00  | 1           | 0             | 1                    |
+| 4         | AkRu03357   | AkRu03357224  | 2021-01-01 10:11:00  | 1           | 28            | 14                   |
+
+> This table records visits to specific locations, including the `location_id`, `source_id`, `record_id`, and the `date` and time of each visit (`time_of_record`). It also tracks which employee (`assigned_employee_id`) carried out the visit, the number of visits (`visit_count`), and the time spent in queue (`time_in_queue`). The `_id` columns often link to other tables—here, the `source_id` in the visits table corresponds to the `source_id` in the `water_source` table. This relationship is an example of a foreign key.
+
+3. Sample Output – Water Source Table
+
+| source_id     | type_of_water_source  | number_of_people_served |
+|---------------|-----------------------|--------------------------|
+| AkHa00000224  | tap_in_home           | 956                      |
+| AkHa00001224  | tap_in_home_broken    | 930                      |
+| AkHa00002224  | tap_in_home_broken    | 486                      |
+| AkHa00003224  | clean_well            | 364                      |
+| AkHa00004224  | tap_in_home_broken    | 94                       |
+  
+> This table contains information on the various water sources available in Maji Ndogo. Each water source is uniquely identified by a `source_id`, classified by its `type_of_water_source`, and includes the estimated `number_of_people_served`. Water sources are where residents collect water, ranging from taps in homes to clean wells and other supply points.  
+
+> The database also contains a **data dictionary** table (`data_dictionary`) that documents each column’s meaning across all tables. Referring to it is an essential step in understanding the dataset and maintaining accurate analysis.
 
