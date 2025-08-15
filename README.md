@@ -8,8 +8,8 @@
 - [Data Familiarization](#data-familiarization)
 - [Key SQL Queries 1](#key-sql-queries-1)
 - [Water Source Analysis](#water-source-analysis)
-- [Exploratory Data Analysis](#exploratory-data-analysis)
-- [Data Analysis](#data-analysis)
+- [Water Source Types – Description](#water-source-types--description)
+- [Visit Pattern Exploration](#visit-pattern-exploration)
 - [Result/Findings](#resultfindings)
 - [Recommendations](#recommendations)
 - [Limitations](#limitations)
@@ -215,3 +215,113 @@ Taps installed inside citizens’ homes, typically serving about **six people pe
 
 Home-installed taps that are **non-functional** due to issues like burst pipes, broken pumps, or non-operational water treatment plants. Despite existing infrastructure, these taps cannot provide water until repairs are made.
 
+## Visit Pattern Exploration
+---
+
+> ### 🏠 Important note on Home Taps
+> 
+> In Maji Ndogo, between **6–10 million people** have running water installed in their homes — this includes both working taps (`tap_in_home`) and non-functional taps (`tap_in_home_broken`).  
+> 
+> If we were to store this information at the **household level** (one record per home), our database would contain around **1 million rows**. While accurate, this volume of data could significantly slow down the system. To keep the dataset manageable, surveyors **aggregated multiple households** into a single record.  
+> 
+> **Example:**  
+> The record with `source_id = AkHa00000224` refers to a `tap_in_home` serving **956 people**.  
+> This represents approximately **160 homes**, with an average of **6 people per home** (`160 × 6 ≈ 956`).  
+> 
+> **Key takeaway:** One `tap_in_home` or `tap_in_home_broken` record in our dataset actually represents multiple households, and the `number_of_people_served` column is the total population across those households.
+
+
+---
+
+### ⏳ Unpacking the Visits Table
+
+The `visits` table logs trips made to various water sources, including details like queue time, location, and assigned employees.  
+To understand extreme waiting times, I queried all records where the `time_in_queue` exceeded **500 minutes** (over 8 hours of waiting).  
+
+```sql
+SELECT
+    *
+FROM
+    md_water_services.visits
+WHERE
+    time_in_queue > 500;
+```
+
+**Query Output – Water Sources with Extreme Queue Times**
+
+| record_id | location_id | source_id     | time_of_record       | visit_count | time_in_queue | assigned_employee_id |
+|-----------|-------------|---------------|----------------------|-------------|---------------|----------------------|
+| 899       | SoRu35083   | SoRu35083224  | 2021-01-16 10:14:00  | 6           | 515           | 28                   |
+| 2304      | SoKo33124   | SoKo33124224  | 2021-02-06 07:53:00  | 5           | 512           | 16                   |
+| 2315      | KiRu26095   | KiRu26095224  | 2021-02-06 14:32:00  | 3           | 529           | 8                    |
+| 3206      | SoRu38776   | SoRu38776224  | 2021-02-20 15:03:00  | 5           | 509           | 46                   |
+| 3701      | HaRu19601   | HaRu19601224  | 2021-02-27 12:53:00  | 3           | 504           | 0                    |
+| 4154      | SoRu38869   | SoRu38869224  | 2021-03-06 10:44:00  | 2           | 533           | 24                   |
+| 5483      | AmRu14089   | AmRu14089224  | 2021-03-27 18:15:00  | 4           | 509           | 12                   |
+| 9177      | SoRu37635   | SoRu37635224  | 2021-05-22 18:48:00  | 2           | 515           | 1                    |
+| 9648      | SoRu36096   | SoRu36096224  | 2021-05-29 11:24:00  | 2           | 533           | 3                    |
+| 11631     | AkKi00881   | AkKi00881224  | 2021-06-26 06:15:00  | 6           | 502           | 32                   |
+
+**Description:**  
+This table shows the results of a query filtering for visits where `time_in_queue` exceeded **500 minutes** (over 8 hours).  
+Such extended wait times point to **severe access challenges** in these locations, potentially caused by limited water availability, infrastructure breakdowns, or operational bottlenecks.  
+Highlighting these cases helps prioritize interventions in the areas where residents endure the longest waits for water.
+
+### 🔍 Investigating Water Source Types for Long Queue Times
+
+After identifying visits with **extremely long queue times** (over 500 minutes), I wanted to know **what types of water sources** were causing such delays.  
+The `water_source` table contains the columns `type_of_water_source` and `source_id`, so I cross-referenced the `source_id` values from the long-wait records.
+
+From the previous query, I selected a few `source_id` values to investigate:
+
+- `AkKi00881224`
+- `SoRu37635224`
+- `SoRu36096224`
+
+I then ran the following SQL query:
+
+```sql
+SELECT 
+    *
+FROM 
+    water_source
+WHERE 
+    source_id IN ('AkKi00881224', 'SoRu37635224', 'SoRu36096224');
+```
+
+**Query Output – Water Source Types for Long Queue Times**
+
+| source_id     | type_of_water_source | number_of_people_served |
+|---------------|----------------------|-------------------------|
+| AkKi00881224  | shared_tap           | 3398                    |
+| AkLu01628224  | bio_dirty_well       | 210                     |
+| AkRu05234224  | tap_in_home_broken   | 496                     |
+| HaRu19601224  | shared_tap           | 3322                    |
+| HaZa21742224  | pol_dirty_well       | 308                     |
+| SoRu36096224  | shared_tap           | 3786                    |
+| SoRu37635224  | shared_tap           | 3920                    |
+| SoRu38776224  | shared_tap           | 3180                    |
+
+
+### Query Output – Water Source Types for Long Queue Times
+
+| source_id     | type_of_water_source | number_of_people_served |
+|---------------|----------------------|-------------------------|
+| AkKi00881224  | shared_tap           | 3398                    |
+| AkLu01628224  | bio_dirty_well       | 210                     |
+| AkRu05234224  | tap_in_home_broken   | 496                     |
+| HaRu19601224  | shared_tap           | 3322                    |
+| HaZa21742224  | pol_dirty_well       | 308                     |
+| SoRu36096224  | shared_tap           | 3786                    |
+| SoRu37635224  | shared_tap           | 3920                    |
+| SoRu38776224  | shared_tap           | 3180                    |
+
+**Description:**  
+This table cross-references the `source_id` values from visits with **extreme queue times** against the `water_source` table to reveal the type of water source and how many people each serves.  
+
+The findings indicate that:
+- **Shared taps** dominate the list, often serving thousands of people, leading to inevitable congestion.
+- A few **wells** are also present, but they are marked as either biologically or pollution-contaminated, which could reduce usage or slow distribution.
+- **Broken in-home taps** appear, suggesting that even household infrastructure issues contribute to long queues elsewhere.
+
+These insights reinforce that **infrastructure improvements** must target both **high-demand shared facilities** and **failing household connections** to reduce excessive wait times.
