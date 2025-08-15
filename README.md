@@ -7,7 +7,7 @@
 - [Project Overview](#project-overview)
 - [Data Familiarization](#data-familiarization)
 - [Key SQL Queries 1](#key-sql-queries-1)
-- [Steps](#steps)
+- [Water Source Analysis](#water-source-analysis)
 - [Exploratory Data Analysis](#exploratory-data-analysis)
 - [Data Analysis](#data-analysis)
 - [Result/Findings](#resultfindings)
@@ -59,6 +59,7 @@ This initial exploration gave me a clear understanding of the **scope** and **st
 ### Key SQL Queries 1 
 
 #### 1. 📊 Show All Tables: This give a list of all the tables in the database.
+
 ```sql
 SHOW TABLES;
 ```
@@ -110,7 +111,7 @@ LIMIT 5;
 
 ```
 
-1. Sample Output – Location Table
+1. **Sample Output – Location Table**
 
 | location_id | address               | province_name | town_name | location_type |
 |-------------|-----------------------|---------------|-----------|---------------|
@@ -122,7 +123,7 @@ LIMIT 5;
 
 > This table contains details about specific locations, including their `address`, the `province` and `town` they belong to, and whether they are classified as urban or not. While it doesn’t provide a descriptive name for the location, each entry includes a unique `location_id` that serves as an identifier.
 
-2.  Sample Output – Visits Table
+2.  **Sample Output – Visits Table**
 
 | record_id | location_id | source_id     | time_of_record       | visit_count | time_in_queue | assigned_employee_id |
 |-----------|-------------|---------------|----------------------|-------------|---------------|----------------------|
@@ -134,7 +135,7 @@ LIMIT 5;
 
 > This table records visits to specific locations, including the `location_id`, `source_id`, `record_id`, and the `date` and time of each visit (`time_of_record`). It also tracks which employee (`assigned_employee_id`) carried out the visit, the number of visits (`visit_count`), and the time spent in queue (`time_in_queue`). The `_id` columns often link to other tables—here, the `source_id` in the visits table corresponds to the `source_id` in the `water_source` table. This relationship is an example of a foreign key.
 
-3. Sample Output – Water Source Table
+3. **Sample Output – Water Source Table**
 
 | source_id     | type_of_water_source  | number_of_people_served |
 |---------------|-----------------------|--------------------------|
@@ -148,3 +149,33 @@ LIMIT 5;
 
 > The database also contains a **data dictionary** table (`data_dictionary`) that documents each column’s meaning across all tables. Referring to it is an essential step in understanding the dataset and maintaining accurate analysis.
 
+
+## Water Source Analysis
+---
+
+🚰
+To better understand the water infrastructure in Maji Ndogo, I first needed to identify the different types of water sources available.  
+By inspecting the database structure, I determined that this information is stored in the `water_source` table.  
+
+I then ran the following SQL query to retrieve all unique water source types:  
+
+```sql
+SELECT DISTINCT
+    type_of_water_source
+FROM
+    water_source;
+```
+
+**Query Output – Unique Water Source Types**
+
+| type_of_water_source  |
+|-----------------------|
+| tap_in_home           |
+| tap_in_home_broken    |
+| well                  |
+| shared_tap            |
+| river                 |
+
+**Description:**
+
+> This table lists the five unique types of water sources recorded in the database, retrieved from the water_source table. These range from private taps in homes to shared taps, wells, and natural sources like rivers. Understanding these categories is key to assessing water accessibility in Maji Ndogo.
