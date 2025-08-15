@@ -195,26 +195,23 @@ While millions in Maji Ndogo rely on rivers, this source carries a **high risk o
 
 ![]()
 
-Wells draw water from underground sources and are commonly shared within communities.  
-Being closed water sources, they are generally **less prone to contamination** than rivers. However, due to aging infrastructure and past corruption, many wells in Maji Ndogo are no longer clean.
+Wells draw water from underground sources and are commonly shared within communities. Being closed water sources, they are generally **less prone to contamination** than rivers. However, due to aging infrastructure and past corruption, many wells in Maji Ndogo are no longer clean.
 
 ### 3. Shared Tap
 
 ![]()
 
-A public tap located in a shared community area.  
-These taps are a **more controlled source** compared to rivers and wells but still require regular maintenance to ensure safe water quality.
+A public tap located in a shared community area. These taps are a **more controlled source** compared to rivers and wells but still require regular maintenance to ensure safe water quality.
 
 ### 4. Tap in Home
 
 ![]()
 
-Taps installed inside citizens’ homes, typically serving about **six people per household**.  
-This is one of the **most convenient and safest** water sources when infrastructure is properly maintained.
+Taps installed inside citizens’ homes, typically serving about **six people per household**. This is one of the **most convenient and safest** water sources when infrastructure is properly maintained.
 
 ### 5. Broken Tap in Home
 
 ![]()
-Home-installed taps that are **non-functional** due to issues like burst pipes, broken pumps, or non-operational water treatment plants.  
-Despite existing infrastructure, these taps cannot provide water until repairs are made.
+
+Home-installed taps that are **non-functional** due to issues like burst pipes, broken pumps, or non-operational water treatment plants. Despite existing infrastructure, these taps cannot provide water until repairs are made.
 
