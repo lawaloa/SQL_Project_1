@@ -19,6 +19,8 @@
 ### Project Overview
 ---
 
+![Maji Ndogo](https://github.com/lawaloa/SQL_Project_1/blob/main/Picture_1.png)
+
  📌 This project focuses on analyzing a newly collected **database of 60,000 records** for **Maji Ndogo Water Services**.  
 The data, gathered by engineers, scientists, field workers, and analysts, holds crucial insights to address the region’s ongoing water crisis.  
 
