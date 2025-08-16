@@ -24,7 +24,7 @@
 The data, gathered by engineers, scientists, field workers, and analysts, holds crucial insights to address the region’s ongoing water crisis.  
 
 The goal is to **explore, clean, and analyze** this extensive dataset to uncover patterns, identify challenges, and support data-driven decision-making.  
-As part of the project, we broke down the work into actionable steps:  
+As part of the project, I broke down the work into actionable steps:  
 
 1. **Data Familiarization** – Load and inspect all tables to understand structure, relationships, and variables.  
 2. **Water Source Analysis** – Identify all unique water source types and their distributions.  
@@ -569,21 +569,17 @@ DROP TABLE
   md_water_services.well_pollution_copy;
 ```
 
-##### 📌 Key Takeaway
+##### 💡 Reflection  
 
-By testing fixes step by step on a temporary copy, validating them, and only then cleaning up, I ensured that bad data never entered the main table — a critical best practice I always follow when working on real-world datasets.
+This step-by-step journey really showed me the **importance of data integrity validation**. Even with over **60,000 records**, small inconsistencies—like mislabeled descriptions—could easily mislead the analysis.  
 
+By applying **controlled updates**, testing them on a safe copy of the table, and validating results before cleanup, I learned that **data cleaning is not just technical**—it’s fundamental to building **trustworthy insights** and ensuring that decisions are backed by reliable information.  
 
-### Conclusion
 ---
 
-#### 💡 Reflection
+###### 🧹 Before Cleaning  
 
-This step really showed me the importance of **data integrity validation**. Even though the database had over **60,000 records**, small errors like mislabeled descriptions could easily create misleading insights. By applying controlled updates, testing them on a copy, and then cleaning up, I demonstrated how **careful data cleaning** is not just technical, but also an essential part of building trust in any analysis project.
-
-##### 🧹 Before Cleaning
-
-Here’s a snapshot of the inconsistent records **before applying the cleaning process**:
+Here’s a snapshot of inconsistent records **before applying the cleaning process**:
 
 | source_id     | date                | description                      | pollutant_ppm | biological | results |
 |---------------|---------------------|----------------------------------|---------------|------------|---------|
@@ -597,48 +593,74 @@ Here’s a snapshot of the inconsistent records **before applying the cleaning p
 
 ---
 
-##### ✅ After Cleaning
+###### ✅ After Cleaning  
 
 Here’s the corrected version **after fixing the anomalies**:
 
-| source_id     | date                | description             | pollutant_ppm | biological | results                  |
-|---------------|---------------------|-------------------------|---------------|------------|--------------------------|
-| AkRu08936224  | 2021-01-08 09:22:00 | Bacteria: E. coli       | 0.0406458     | 35.0068    | Contaminated: Biological |
-| AkRu06489224  | 2021-01-10 09:44:00 | Bacteria: Giardia Lamblia | 0.0897904   | 38.467     | Contaminated: Biological |
-| SoRu38011224  | 2021-01-14 15:35:00 | Bacteria: E. coli       | 0.0425095     | 19.2897    | Contaminated: Biological |
-| AkKi00955224  | 2021-01-22 12:47:00 | Bacteria: E. coli       | 0.0812092     | 40.2273    | Contaminated: Biological |
-| KiHa22929224  | 2021-02-06 13:54:00 | Bacteria: E. coli       | 0.0722537     | 18.4482    | Contaminated: Biological |
-| KiRu25473224  | 2021-02-07 15:51:00 | Bacteria: Giardia Lamblia | 0.0630094   | 24.4536    | Contaminated: Biological |
-| HaRu17401224  | 2021-03-01 13:44:00 | Bacteria: Giardia Lamblia | 0.0649209   | 25.8129    | Contaminated: Biological |
+| source_id     | date                | description               | pollutant_ppm | biological | results                  |
+|---------------|---------------------|---------------------------|---------------|------------|--------------------------|
+| AkRu08936224  | 2021-01-08 09:22:00 | Bacteria: E. coli         | 0.0406458     | 35.0068    | Contaminated: Biological |
+| AkRu06489224  | 2021-01-10 09:44:00 | Bacteria: Giardia Lamblia | 0.0897904     | 38.467     | Contaminated: Biological |
+| SoRu38011224  | 2021-01-14 15:35:00 | Bacteria: E. coli         | 0.0425095     | 19.2897    | Contaminated: Biological |
+| AkKi00955224  | 2021-01-22 12:47:00 | Bacteria: E. coli         | 0.0812092     | 40.2273    | Contaminated: Biological |
+| KiHa22929224  | 2021-02-06 13:54:00 | Bacteria: E. coli         | 0.0722537     | 18.4482    | Contaminated: Biological |
+| KiRu25473224  | 2021-02-07 15:51:00 | Bacteria: Giardia Lamblia | 0.0630094     | 24.4536    | Contaminated: Biological |
+| HaRu17401224  | 2021-03-01 13:44:00 | Bacteria: Giardia Lamblia | 0.0649209     | 25.8129    | Contaminated: Biological |
 
 ---
 
-##### 📌 Interpretation
-- **Before Cleaning** → The `results` column incorrectly marked several contaminated wells as **Clean**, despite biological contamination levels being far above **0.01 CFU/mL**.  
-- **After Cleaning** → The descriptions were corrected, and the results column now accurately reflects **Contaminated: Biological**, ensuring data integrity and protecting public health.
+###### 📌 Interpretation  
 
-This correction ensures that **no contaminated wells are mislabeled as clean**, protecting the integrity of our analysis and safeguarding community health.  
+- **Before Cleaning** → Several wells were **mislabeled as Clean** even though their biological contamination was above safe limits.  
+- **After Cleaning** → Both `description` and `results` were corrected, ensuring contaminated wells are flagged properly.  
 
-#### 🔄 Summarry
-
-To ensure the integrity of the **well pollution dataset**, I followed a structured cleaning process:
-
-📝 **Detect Issue** → 🔧 **Apply Fix** → ✅ **Validate** → 🗑️ **Clean Up**
-
-1. **📝 Detect Issue** – Identified anomalies where contaminated wells were incorrectly marked as *Clean*.  
-2. **🔧 Apply Fix** – Updated inconsistent `description` values and corrected the `results` column based on biological contamination thresholds.  
-3. **✅ Validate** – Verified the changes by re-running queries on the cleaned copy of the table (`well_pollution_copy`).  
-4. **🗑️ Clean Up** – Dropped the temporary table after confirming corrections, keeping only the cleaned dataset.  
+This correction ensures that **no unsafe wells are reported as safe**, strengthening the **reliability of analysis** and safeguarding **public health**.  
 
 ---
 
-##### 🔍 Visual Workflow
+##### 🔄 Summary  
+
+To ensure the integrity of the **well pollution dataset**, I followed a structured cleaning workflow:  
+
+📝 **Detect Issue** → 🔧 **Apply Fix** → ✅ **Validate** → 🗑️ **Clean Up**  
+
+1. **📝 Detect Issue** – Identified mislabeled contamination data.  
+2. **🔧 Apply Fix** – Corrected `description` and `results` values.  
+3. **✅ Validate** – Verified corrections on a safe copy (`well_pollution_copy`).  
+4. **🗑️ Clean Up** – Removed the temporary copy, keeping only the cleaned dataset.  
+
+---
+
+###### 🔍 Visual Workflow  
 
 ```text
 📝 Detect Issue  →  🔧 Apply Fix  →  ✅ Validate  →  🗑️ Clean Up
 ```
 
+
+
+### Conclusion
+---
+
+#### 🎯 Project Goal  
+
+The goal of this project was to **explore, clean, and analyze an extensive dataset** from Maji Ndogo’s water services to uncover patterns, identify challenges, and support **data-driven decision-making**.  
+
+To achieve this, I broke the work into **actionable steps**:  
+
+1. **📂 Data Familiarization** – Loaded and inspected all tables to understand their structure, relationships, and variables.  
+2. **🚰 Water Source Analysis** – Identified unique water source types and studied their distribution across the community.  
+3. **👥 Visit Pattern Exploration** – Analyzed visit frequencies to different water sources and flagged high-traffic locations.  
+4. **💧 Water Quality Assessment** – Filtered sources with high subjective quality scores and frequent visits.  
+5. **🧪 Pollution Investigation** – Detected contaminated sources and identified anomalies requiring urgent intervention.  
+
+---
+
 ### Reference
 ---
 
-ALX Data Programs: Querying Data: Integrated Project 1, Maji Ndogo: From analysis to action. Beginning Our Data-Driven Journey in Maji Ndogo
+- 📚 ALX Data Programs: Querying Data: Integrated Project 1 – Maji Ndogo: From Analysis to Action.
+
+- Dataset: Maji Ndogo Water Services – a fictional but realistic dataset designed for SQL practice, data cleaning, and exploratory analysis.
+
+- Author’s Contribution: All SQL queries, cleaning steps, and analysis documented here were personally executed as part of this project build.
