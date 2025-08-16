@@ -11,8 +11,8 @@
 - [Visit Pattern Exploration](#visit-pattern-exploration)
 - [Water Quality Assessment](#water-quality-assessment)
 - [Pollution Investigation](#pollution-investigation)
-- [Limitations](#limitations)
-- [References](#references)
+- [Conclusion](#conclusion)
+- [Reference](#reference)
 
 
 ### Project Overview
@@ -55,9 +55,9 @@ This initial exploration gave me a clear understanding of the **scope** and **st
 
 ---
 
-### 📊 Key SQL Queries 
+#### 📊 Key SQL Queries 
 
-#### 1. Show All Tables: This give a list of all the tables in the database.
+##### 1. Show All Tables: This give a list of all the tables in the database.
 
 ```sql
 SHOW TABLES;
@@ -77,7 +77,7 @@ The database contains 8 tables:
 | well_pollution                        |
 
 
-#### 2. 📊 Preview First 5 Records From Each Table
+##### 2. 📊 Preview First 5 Records From Each Table
 
 ```sql
 SELECT *
@@ -149,10 +149,10 @@ LIMIT 5;
 > The database also contains a **data dictionary** table (`data_dictionary`) that documents each column’s meaning across all tables. Referring to it is an essential step in understanding the dataset and maintaining accurate analysis.
 
 
-## Water Source Analysis
+### Water Source Analysis
 ---
 
-### 🚰 Step 1: Diving into the Water Source
+#### 🚰 Step 1: Diving into the Water Source
 
 To better understand the water infrastructure in Maji Ndogo, I first needed to identify the different types of water sources available.  
 By inspecting the database structure, I determined that this information is stored in the `water_source` table.  
@@ -180,45 +180,45 @@ FROM
 
 > This table lists the five unique types of water sources recorded in the database, retrieved from the water_source table. These range from private taps in homes to shared taps, wells, and natural sources like rivers. Understanding these categories is key to assessing water accessibility in Maji Ndogo.
 
-##  Water Source Types – Description
+###  Water Source Types – Description
 
 🚰
 
-### 1. River
+#### 1. River
 
 ![](https://github.com/lawaloa/SQL_Project_1/blob/main/river.png)
 
 An open water source where people collect drinking water directly from the river.  
 While millions in Maji Ndogo rely on rivers, this source carries a **high risk of contamination** from biological and chemical pollutants, making it the **least safe** option for drinking water.
 
-### 2. Well
+#### 2. Well
 
 ![](https://github.com/lawaloa/SQL_Project_1/blob/main/Picture_1.png)
 
 Wells draw water from underground sources and are commonly shared within communities. Being closed water sources, they are generally **less prone to contamination** than rivers. However, due to aging infrastructure and past corruption, many wells in Maji Ndogo are no longer clean.
 
-### 3. Shared Tap
+#### 3. Shared Tap
 
 ![](https://github.com/lawaloa/SQL_Project_1/blob/main/shared_tap.png)
 
 A public tap located in a shared community area. These taps are a **more controlled source** compared to rivers and wells but still require regular maintenance to ensure safe water quality.
 
-### 4. Tap in Home
+#### 4. Tap in Home
 
 ![](https://github.com/lawaloa/SQL_Project_1/blob/main/tap_in_home.png)
 
 Taps installed inside citizens’ homes, typically serving about **six people per household**. This is one of the **most convenient and safest** water sources when infrastructure is properly maintained.
 
-### 5. Broken Tap in Home
+#### 5. Broken Tap in Home
 
 ![](https://github.com/lawaloa/SQL_Project_1/blob/main/water_treatment.png)
 
 Home-installed taps that are **non-functional** due to issues like burst pipes, broken pumps, or non-operational water treatment plants. Despite existing infrastructure, these taps cannot provide water until repairs are made.
 
-## Visit Pattern Exploration
+### Visit Pattern Exploration
 ---
 
-> ### 🏠 Important note on Home Taps
+> #### 🏠 Important note on Home Taps
 > 
 > In Maji Ndogo, between **6–10 million people** have running water installed in their homes — this includes both working taps (`tap_in_home`) and non-functional taps (`tap_in_home_broken`).  
 > 
@@ -233,7 +233,7 @@ Home-installed taps that are **non-functional** due to issues like burst pipes, 
 
 ---
 
-### ⏳ Step 2: Unpacking the Visits Table
+#### ⏳ Step 2: Unpacking the Visits Table
 
 The `visits` table logs trips made to various water sources, including details like queue time, location, and assigned employees.  
 To understand extreme waiting times, I queried all records where the `time_in_queue` exceeded **500 minutes** (over 8 hours of waiting).  
@@ -267,7 +267,7 @@ This table shows the results of a query filtering for visits where `time_in_queu
 Such extended wait times point to **severe access challenges** in these locations, potentially caused by limited water availability, infrastructure breakdowns, or operational bottlenecks.  
 Highlighting these cases helps prioritize interventions in the areas where residents endure the longest waits for water.
 
-### 🔍 Step 3: Investigating Water Source Types for Long Queue Times
+#### 🔍 Step 3: Investigating Water Source Types for Long Queue Times
 
 After identifying visits with **extremely long queue times** (over 500 minutes), I wanted to know **what types of water sources** were causing such delays.  
 The `water_source` table contains the columns `type_of_water_source` and `source_id`, so I cross-referenced the `source_id` values from the long-wait records.
@@ -312,10 +312,10 @@ The findings indicate that:
 
 These insights reinforce that **infrastructure improvements** must target both **high-demand shared facilities** and **failing household connections** to reduce excessive wait times.
 
-## Water Quality Assessment
+### Water Quality Assessment
 ---
 
-### 💧 Step 4 – Assessing the Quality of Water Sources
+#### 💧 Step 4 – Assessing the Quality of Water Sources
 
 The **quality of water sources** is a central focus of this survey.  
 The `water_quality` table records a **subjective quality score** for each visit, assigned by a field surveyor:  
@@ -337,7 +337,7 @@ WHERE
     AND visit_count = 2;
 ```
 
-> ### ⚠️ Data Integrity Concern
+> #### ⚠️ Data Integrity Concern
 > 
 > I retrieved **218 rows** matching these criteria — but this result raises some concerns.  
 > At this scale, it’s almost inevitable that **errors will creep into the dataset**.  
@@ -348,10 +348,10 @@ WHERE
 > 
 > **Why this matters:** Even small inaccuracies in our quality assessments could mislead decision-making, divert resources, and delay solutions for communities in urgent need.
 
-## Pollution Investigation
+### Pollution Investigation
 ---
 
-### 🧪 Step 5 – Investigating Pollution Issues
+#### 🧪 Step 5 – Investigating Pollution Issues
 
 For well water sources, we also recorded detailed **contamination and pollution data**.  
 To start, I identified the correct table (`well_pollution`) and previewed the first five rows to understand its structure.
@@ -366,7 +366,7 @@ FROM
 LIMIT 5;
 ```
 
-### Query Output
+**Query Output**
 
 | source_id     | date                | description                              | pollutant_ppm | biological | results                   |
 |---------------|---------------------|------------------------------------------|---------------|------------|---------------------------|
@@ -386,17 +386,16 @@ Each well is classified into one of three categories:
 - **Contaminated: Biological** – Unsafe due to harmful microorganisms.  
 - **Contaminated: Chemical** – Unsafe due to toxic substances.  
 
-This classification is vital for **public health monitoring** and **intervention planning**. Since each record contains a `source_id`, we can link it back to its corresponding location in the database — allowing us to identify and map contamination hotspots across Maji Ndogo.
+This classification is vital for **public health monitoring** and **intervention planning**. Since each record contains a `source_id`, I would have prefer to link it back to its corresponding location in the database — allowing for identifation and mapping contamination hotspots across Maji Ndogo.
 
-### ⚠️ Step 6 – Data Integrity Check for Well Pollution
+#### ⚠️ Step 6 – Data Integrity Check for Well Pollution
 
 The `well_pollution` table contains **scientist notes** in the `description` column, which makes it harder to process consistently.  
 The **biological column** (measured in **CFU/mL**) is the reliable indicator of contamination:  
 - `0` → Clean water.  
 - `> 0.01` → Contaminated water.  
 
-The **worst-case scenario** is when a well is marked as `Clean` but the biological contamination is actually higher than `0.01`.  
-This would mean contaminated water is being incorrectly classified as safe — a serious **public health risk**.
+The **worst-case scenario** is when a well is marked as `Clean` but the biological contamination is actually higher than `0.01`. This would mean contaminated water is being incorrectly classified as safe — a serious **public health risk**.
 
 ---
 
@@ -438,7 +437,7 @@ This suggests that:
 > **Key Takeaway:** Proper **data validation and auditing** are essential to prevent misclassifications that could endanger entire communities relying on these water sources.
 
 
-### 🔎 Step 7: Fixing Data Anomalies in `well_pollution`
+#### 🔎 Step 7: Fixing Data Anomalies in `well_pollution`
 
 During inspection, we discovered **38 incorrect records** in the `well_pollution` table.  
 The issue stems from **misleading descriptions** and **incorrect results classification**:  
@@ -466,9 +465,9 @@ WHERE
 
 👉 This query returned **38 wrong descriptions**.
 
-### 🛠️ Safe Fixing Process
+##### 🛠️ Safe Fixing Process
 
-Since modifying production tables directly can introduce new errors, we first create a **copy** of the table, apply updates there, and validate results.
+Since modifying production tables directly can introduce new errors, I first create a **copy** of the table, apply updates there, and validate results.
 
 1. **Create a Copy of the Table**
 
@@ -510,9 +509,9 @@ WHERE biological > 0.01
   AND results = 'Clean';
 ```
 
-### ✅ Validation Check
+##### ✅ Validation Check
 
-After applying fixes, confirm that no incorrect records remain:
+After applying fixes, I confirmed that no incorrect records remain:
 
 ```sql
 SELECT *
@@ -521,4 +520,125 @@ WHERE description LIKE "Clean_%"
    OR (results = "Clean" AND biological > 0.01);
 ```
 
-If this query returns **0 rows**, the fixes worked correctly. 🎉
+This query returns **0 rows**, which indicates that the fixes worked correctly. 🎉
+
+#### 🗑️ Final Step: Apply Fixes and Clean Up
+
+Once I verified that my updates worked correctly on the **copy table**, I went ahead and applied the same fixes to the original dataset. This way, the `well_pollution` table now contains accurate descriptions and contamination results.
+
+---
+
+##### 🔧 Apply Updates to `well_pollution`
+
+```sql
+-- Fix descriptions for E. coli
+UPDATE well_pollution
+SET description = 'Bacteria: E. coli'
+WHERE description = 'Clean Bacteria: E. coli';
+
+-- Fix descriptions for Giardia Lamblia
+UPDATE well_pollution
+SET description = 'Bacteria: Giardia Lamblia'
+WHERE description = 'Clean Bacteria: Giardia Lamblia';
+
+-- Fix incorrect results
+UPDATE well_pollution
+SET results = 'Contaminated: Biological'
+WHERE biological > 0.01 
+  AND results = 'Clean';
+```
+
+##### ✅ Validation Check (Again)
+
+```sql
+SELECT *
+FROM well_pollution
+WHERE description LIKE 'Clean%'
+   OR (results = 'Clean' AND biological > 0.01);
+```
+
+
+👉 If this query returned **0 rows**, it meant my fixes worked perfectly.
+
+##### 🗑️ Clean Up Temporary Table
+
+Once I was confident with the results, I removed the temporary copy and kept only the corrected dataset:
+
+```sql
+DROP TABLE
+  md_water_services.well_pollution_copy;
+```
+
+##### 📌 Key Takeaway
+
+By testing fixes step by step on a temporary copy, validating them, and only then cleaning up, I ensured that bad data never entered the main table — a critical best practice I always follow when working on real-world datasets.
+
+
+### Conclusion
+---
+
+#### 💡 Reflection
+
+This step really showed me the importance of **data integrity validation**. Even though the database had over **60,000 records**, small errors like mislabeled descriptions could easily create misleading insights. By applying controlled updates, testing them on a copy, and then cleaning up, I demonstrated how **careful data cleaning** is not just technical, but also an essential part of building trust in any analysis project.
+
+##### 🧹 Before Cleaning
+
+Here’s a snapshot of the inconsistent records **before applying the cleaning process**:
+
+| source_id     | date                | description                      | pollutant_ppm | biological | results |
+|---------------|---------------------|----------------------------------|---------------|------------|---------|
+| AkRu08936224  | 2021-01-08 09:22:00 | Bacteria: E. coli                | 0.0406458     | 35.0068    | Clean   |
+| AkRu06489224  | 2021-01-10 09:44:00 | Clean Bacteria: Giardia Lamblia  | 0.0897904     | 38.467     | Clean   |
+| SoRu38011224  | 2021-01-14 15:35:00 | Bacteria: E. coli                | 0.0425095     | 19.2897    | Clean   |
+| AkKi00955224  | 2021-01-22 12:47:00 | Bacteria: E. coli                | 0.0812092     | 40.2273    | Clean   |
+| KiHa22929224  | 2021-02-06 13:54:00 | Bacteria: E. coli                | 0.0722537     | 18.4482    | Clean   |
+| KiRu25473224  | 2021-02-07 15:51:00 | Clean Bacteria: Giardia Lamblia  | 0.0630094     | 24.4536    | Clean   |
+| HaRu17401224  | 2021-03-01 13:44:00 | Clean Bacteria: Giardia Lamblia  | 0.0649209     | 25.8129    | Clean   |
+
+---
+
+##### ✅ After Cleaning
+
+Here’s the corrected version **after fixing the anomalies**:
+
+| source_id     | date                | description             | pollutant_ppm | biological | results                  |
+|---------------|---------------------|-------------------------|---------------|------------|--------------------------|
+| AkRu08936224  | 2021-01-08 09:22:00 | Bacteria: E. coli       | 0.0406458     | 35.0068    | Contaminated: Biological |
+| AkRu06489224  | 2021-01-10 09:44:00 | Bacteria: Giardia Lamblia | 0.0897904   | 38.467     | Contaminated: Biological |
+| SoRu38011224  | 2021-01-14 15:35:00 | Bacteria: E. coli       | 0.0425095     | 19.2897    | Contaminated: Biological |
+| AkKi00955224  | 2021-01-22 12:47:00 | Bacteria: E. coli       | 0.0812092     | 40.2273    | Contaminated: Biological |
+| KiHa22929224  | 2021-02-06 13:54:00 | Bacteria: E. coli       | 0.0722537     | 18.4482    | Contaminated: Biological |
+| KiRu25473224  | 2021-02-07 15:51:00 | Bacteria: Giardia Lamblia | 0.0630094   | 24.4536    | Contaminated: Biological |
+| HaRu17401224  | 2021-03-01 13:44:00 | Bacteria: Giardia Lamblia | 0.0649209   | 25.8129    | Contaminated: Biological |
+
+---
+
+##### 📌 Interpretation
+- **Before Cleaning** → The `results` column incorrectly marked several contaminated wells as **Clean**, despite biological contamination levels being far above **0.01 CFU/mL**.  
+- **After Cleaning** → The descriptions were corrected, and the results column now accurately reflects **Contaminated: Biological**, ensuring data integrity and protecting public health.
+
+This correction ensures that **no contaminated wells are mislabeled as clean**, protecting the integrity of our analysis and safeguarding community health.  
+
+#### 🔄 Summarry
+
+To ensure the integrity of the **well pollution dataset**, I followed a structured cleaning process:
+
+📝 **Detect Issue** → 🔧 **Apply Fix** → ✅ **Validate** → 🗑️ **Clean Up**
+
+1. **📝 Detect Issue** – Identified anomalies where contaminated wells were incorrectly marked as *Clean*.  
+2. **🔧 Apply Fix** – Updated inconsistent `description` values and corrected the `results` column based on biological contamination thresholds.  
+3. **✅ Validate** – Verified the changes by re-running queries on the cleaned copy of the table (`well_pollution_copy`).  
+4. **🗑️ Clean Up** – Dropped the temporary table after confirming corrections, keeping only the cleaned dataset.  
+
+---
+
+##### 🔍 Visual Workflow
+
+```text
+📝 Detect Issue  →  🔧 Apply Fix  →  ✅ Validate  →  🗑️ Clean Up
+```
+
+### Reference
+---
+
+ALX Data Programs: Querying Data: Integrated Project 1, Maji Ndogo: From analysis to action. Beginning Our Data-Driven Journey in Maji Ndogo
