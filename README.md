@@ -439,7 +439,7 @@ This suggests that:
 
 #### 🔎 Step 7: Fixing Data Anomalies in `well_pollution`
 
-During inspection, we discovered **38 incorrect records** in the `well_pollution` table.  
+During inspection, I discovered **38 incorrect records** in the `well_pollution` table.  
 The issue stems from **misleading descriptions** and **incorrect results classification**:  
 
 1. Some descriptions mistakenly included the word **"Clean"**, even though the water was contaminated.  
