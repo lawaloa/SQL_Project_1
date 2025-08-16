@@ -34,7 +34,7 @@ As part of the project, I broke down the work into actionable steps:
 
 By executing these tasks, I translate raw data into **meaningful insights** that can guide interventions, improve infrastructure planning, and ultimately bring Maji Ndogo closer to resolving its water crisis.  
 
-**Skills Applied**: SQL · Data Exploration · Data Cleaning · Aggregation · Filtering · Conditional Queries · Pattern Detection  
+**Skills Applied**: SQL · Data Exploration · Data Cleaning · Filtering · Conditional Queries · Pattern Detection  
 
 ---
 
