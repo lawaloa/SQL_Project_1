@@ -1,4 +1,4 @@
-# PROJECT 1 | 💧 Maji Ndogo Water Services – SQL Data Analysis
+# SQL PROJECT 1 | 💧 Maji Ndogo Water Services – SQL Data Analysis & Integrity Validation
 ---
 
 ## Table of Contents
