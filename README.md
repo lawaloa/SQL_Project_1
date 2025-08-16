@@ -6,7 +6,6 @@
 
 - [Project Overview](#project-overview)
 - [Data Familiarization](#data-familiarization)
-- [Key SQL Queries 1](#key-sql-queries-1)
 - [Water Source Analysis](#water-source-analysis)
 - [Water Source Types – Description](#water-source-types--description)
 - [Visit Pattern Exploration](#visit-pattern-exploration)
@@ -56,9 +55,9 @@ This initial exploration gave me a clear understanding of the **scope** and **st
 
 ---
 
-### Key SQL Queries 1 
+### 📊 Key SQL Queries 
 
-#### 1. 📊 Show All Tables: This give a list of all the tables in the database.
+#### 1. Show All Tables: This give a list of all the tables in the database.
 
 ```sql
 SHOW TABLES;
@@ -153,7 +152,8 @@ LIMIT 5;
 ## Water Source Analysis
 ---
 
-🚰
+### 🚰 Step 1: Diving into the Water Source
+
 To better understand the water infrastructure in Maji Ndogo, I first needed to identify the different types of water sources available.  
 By inspecting the database structure, I determined that this information is stored in the `water_source` table.  
 
@@ -233,7 +233,7 @@ Home-installed taps that are **non-functional** due to issues like burst pipes, 
 
 ---
 
-### ⏳ Unpacking the Visits Table
+### ⏳ Step 2: Unpacking the Visits Table
 
 The `visits` table logs trips made to various water sources, including details like queue time, location, and assigned employees.  
 To understand extreme waiting times, I queried all records where the `time_in_queue` exceeded **500 minutes** (over 8 hours of waiting).  
@@ -267,7 +267,7 @@ This table shows the results of a query filtering for visits where `time_in_queu
 Such extended wait times point to **severe access challenges** in these locations, potentially caused by limited water availability, infrastructure breakdowns, or operational bottlenecks.  
 Highlighting these cases helps prioritize interventions in the areas where residents endure the longest waits for water.
 
-### 🔍 Investigating Water Source Types for Long Queue Times
+### 🔍 Step 3: Investigating Water Source Types for Long Queue Times
 
 After identifying visits with **extremely long queue times** (over 500 minutes), I wanted to know **what types of water sources** were causing such delays.  
 The `water_source` table contains the columns `type_of_water_source` and `source_id`, so I cross-referenced the `source_id` values from the long-wait records.
@@ -326,6 +326,7 @@ Shared taps are generally rated lower, and queue times also affect the score.
 For this query, I looked for **sources rated the highest (10)** but with exactly **two recorded visits**.
 
 **SQL Query:**
+
 ```sql
 SELECT
     *
@@ -350,12 +351,13 @@ WHERE
 ## Pollution Investigation
 ---
 
-## 🧪 Step 5 – Investigating Pollution Issues
+### 🧪 Step 5 – Investigating Pollution Issues
 
 For well water sources, we also recorded detailed **contamination and pollution data**.  
 To start, I identified the correct table (`well_pollution`) and previewed the first five rows to understand its structure.
 
 **SQL Query:**
+
 ```sql
 SELECT 
     * 
@@ -385,3 +387,138 @@ Each well is classified into one of three categories:
 - **Contaminated: Chemical** – Unsafe due to toxic substances.  
 
 This classification is vital for **public health monitoring** and **intervention planning**. Since each record contains a `source_id`, we can link it back to its corresponding location in the database — allowing us to identify and map contamination hotspots across Maji Ndogo.
+
+### ⚠️ Step 6 – Data Integrity Check for Well Pollution
+
+The `well_pollution` table contains **scientist notes** in the `description` column, which makes it harder to process consistently.  
+The **biological column** (measured in **CFU/mL**) is the reliable indicator of contamination:  
+- `0` → Clean water.  
+- `> 0.01` → Contaminated water.  
+
+The **worst-case scenario** is when a well is marked as `Clean` but the biological contamination is actually higher than `0.01`.  
+This would mean contaminated water is being incorrectly classified as safe — a serious **public health risk**.
+
+---
+
+🔍 **SQL Query**
+
+```sql
+SELECT 
+    * 
+FROM 
+    well_pollution 
+WHERE 
+    results = 'Clean' 
+    AND biological > 0.01
+LIMIT 7;
+```
+
+📊 **Query Output**
+
+| source_id     | date                | description                      | pollutant_ppm | biological | results |
+|---------------|---------------------|----------------------------------|---------------|------------|---------|
+| AkRu08936224  | 2021-01-08 09:22:00 | Bacteria: E. coli                | 0.0406458     | 35.0068    | Clean   |
+| AkRu06489224  | 2021-01-10 09:44:00 | Clean Bacteria: Giardia Lamblia  | 0.0897904     | 38.467     | Clean   |
+| SoRu38011224  | 2021-01-14 15:35:00 | Bacteria: E. coli                | 0.0425095     | 19.2897    | Clean   |
+| AkKi00955224  | 2021-01-22 12:47:00 | Bacteria: E. coli                | 0.0812092     | 40.2273    | Clean   |
+| KiHa22929224  | 2021-02-06 13:54:00 | Bacteria: E. coli                | 0.0722537     | 18.4482    | Clean   |
+| KiRu25473224  | 2021-02-07 15:51:00 | Clean Bacteria: Giardia Lamblia  | 0.0630094     | 24.4536    | Clean   |
+| HaRu17401224  | 2021-03-01 13:44:00 | Clean Bacteria: Giardia Lamblia  | 0.0649209     | 25.8129    | Clean   |
+
+---
+
+📝 **Interpretation**  
+
+The results reveal **data integrity issues** in the `well_pollution` table. Although these wells are labeled as **"Clean"** in the `results` column, their **biological contamination levels** are well above the safe threshold (`> 0.01 CFU/mL`).  
+
+This suggests that:  
+- Some data entry personnel may have mistakenly relied on the **description text** instead of the **measured biological values**.  
+- Contaminated wells could have been misclassified as clean, posing a **public health risk**.  
+
+> **Key Takeaway:** Proper **data validation and auditing** are essential to prevent misclassifications that could endanger entire communities relying on these water sources.
+
+
+### 🔎 Step 7: Fixing Data Anomalies in `well_pollution`
+
+During inspection, we discovered **38 incorrect records** in the `well_pollution` table.  
+The issue stems from **misleading descriptions** and **incorrect results classification**:  
+
+1. Some descriptions mistakenly included the word **"Clean"**, even though the water was contaminated.  
+   - `Clean Bacteria: E. coli` → should be → `Bacteria: E. coli`  
+   - `Clean Bacteria: Giardia Lamblia` → should be → `Bacteria: Giardia Lamblia`  
+
+2. Some wells were marked as **"Clean"** in the `results` column, even when their **biological contamination** exceeded the safe threshold of `0.01 CFU/mL`.  
+   - These should be updated to → `Contaminated: Biological`.
+
+---
+
+ 📝 **Query to Identify Wrong Records**
+ 
+```sql
+SELECT 
+    * 
+FROM 
+    well_pollution 
+WHERE 
+    description LIKE 'Clean%' 
+    AND biological > 0.01;
+```
+
+👉 This query returned **38 wrong descriptions**.
+
+### 🛠️ Safe Fixing Process
+
+Since modifying production tables directly can introduce new errors, we first create a **copy** of the table, apply updates there, and validate results.
+
+1. **Create a Copy of the Table**
+
+```sql
+CREATE TABLE md_water_services.well_pollution_copy AS
+(
+ SELECT * 
+    FROM md_water_services.well_pollution
+);
+```
+
+2. **Disable SQL Safe Updates (if enabled)**
+
+```sql
+SET SQL_SAFE_UPDATES = 0;
+```
+
+3. **Fix Descriptions**
+
+```sql
+-- Case 1a: Fix incorrect E. coli descriptions
+UPDATE well_pollution_copy
+SET description = 'Bacteria: E. coli'
+WHERE description LIKE 'Clean Bacteria: E. coli';
+
+-- Case 1b: Fix incorrect Giardia Lamblia descriptions
+UPDATE well_pollution_copy
+SET description = 'Bacteria: Giardia Lamblia'
+WHERE description LIKE 'Clean Bacteria: Giardia Lamblia';
+```
+
+4. **Fix Results Column**
+
+```sql
+-- Case 2: Update wrong results
+UPDATE well_pollution_copy
+SET results = 'Contaminated: Biological'
+WHERE biological > 0.01 
+  AND results = 'Clean';
+```
+
+### ✅ Validation Check
+
+After applying fixes, confirm that no incorrect records remain:
+
+```sql
+SELECT *
+FROM well_pollution_copy
+WHERE description LIKE "Clean_%"
+   OR (results = "Clean" AND biological > 0.01);
+```
+
+If this query returns **0 rows**, the fixes worked correctly. 🎉
