@@ -19,7 +19,7 @@
 - [Water Quality Assessment](#water-quality-assessment)
 - [Pollution Investigation](#pollution-investigation)
 - [Conclusion](#conclusion)
-- [Reference](#reference)]
+- [Reference](#reference)
 
 
 ### Project Overview
