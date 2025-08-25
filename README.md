@@ -1,6 +1,13 @@
 # SQL PROJECT 1 | 💧 Maji Ndogo Water Services – SQL Data Analysis & Integrity Validation
 ---
 
+## 👤 Author
+---
+
+**Omotola Lawal**  
+📅 30th May, 2025  
+🔗 [LinkedIn](https://www.linkedin.com/in/omotola-lawal-541b9b131)
+
 ## Table of Contents
 ---
 
@@ -12,7 +19,7 @@
 - [Water Quality Assessment](#water-quality-assessment)
 - [Pollution Investigation](#pollution-investigation)
 - [Conclusion](#conclusion)
-- [Reference](#reference)
+- [Reference](#reference)]
 
 
 ### Project Overview
