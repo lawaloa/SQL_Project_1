@@ -668,6 +668,8 @@ To achieve this, I broke the work into **actionable steps**:
 
 - 📚 ALX Data Programs: Querying Data: Integrated Project 1 – Maji Ndogo: From Analysis to Action.
 
-- Dataset: Maji Ndogo Water Services – a fictional but realistic dataset designed for SQL practice, data cleaning, and exploratory analysis.
+- 🗂️ **Dataset:** *Maji Ndogo Water Services* – a fictional yet realistic dataset designed for SQL practice, data cleaning, and exploratory analysis.  
 
-- Author’s Contribution: All SQL queries, cleaning steps, and analysis documented here were personally executed as part of this project build.
+- ✍️ **Author’s Contribution:** Every SQL query, data-cleaning step, and analytical insight presented here was personally executed and refined by **me**, as part of the **ALX Data Program** capstone project.  
+
+- 🖼️ **Image Credits:** All images and visual assets used in this documentation are courtesy of the **ALX Data Program**.
